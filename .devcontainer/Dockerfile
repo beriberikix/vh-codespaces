@@ -1,5 +1,3 @@
-# See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.241.1/containers/codespaces-linux/.devcontainer/base.Dockerfile
-
 FROM alpine AS build
 WORKDIR /tmp/linux-src
 RUN apk add --no-cache --update ca-certificates libc-dev linux-headers libressl-dev elfutils-dev curl gcc bison flex make musl-dev \
@@ -17,18 +15,7 @@ RUN apk add --no-cache --update ca-certificates libc-dev linux-headers libressl-
     && curl -fsSL https://www.virtualhere.com/sites/default/files/usbclient/vhclientx86_64 -o /dist/vhclientx86_64 \
     && chmod +x /dist/vhclientx86_64
 
-FROM mcr.microsoft.com/vscode/devcontainers/universal:2-focal
-
+FROM alpine
 COPY --from=build /dist/* /vhclient/
 ENV HOME=/vhclient
 WORKDIR /vhclient
-
-# ** [Optional] Uncomment this section to install additional packages. **
-# USER root
-#
-# RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-#     && apt-get -y install --no-install-recommends <your-package-list-here>
-#
-# USER codespace
-
-# https://github.com/virtualhere/docker
